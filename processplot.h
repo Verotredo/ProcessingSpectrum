@@ -15,7 +15,7 @@ public:
     double errorS(QVector<double> &i1,QVector<double> &i2);
     QVector<QVector<double> > interplt(QVector<QVector<double> > &input);
     double  lat(QVector<QVector<double> > &input);
-    QVector<QVector<double> > maxPoints(QVector<QVector<double> > &input);
+    QVector<QVector<double> > maxPoints(QVector<QVector<double> > &input,int begin,int mid, int end);
     QVector<QVector<double> > normalize(QVector<QVector<double> > &input);
     QVector<double>   statistic(QVector<QVector<double> > &input);
     double ** peaks(double ** m);

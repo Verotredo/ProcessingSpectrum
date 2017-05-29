@@ -18,55 +18,62 @@ PlotWidget::PlotWidget(QWidget *parent) :
     m_chart[3]->setTitle("Центрированные графики");
     m_mainLayout->addWidget(m_chartView[0], 0, 0, 10, 6);
     m_mainLayout->addWidget(m_chartView[1], 0, 6, 10, 6);
-    m_mainLayout->addWidget(m_chartView[2], 9, 0, 6, 6);
-    m_mainLayout->addWidget(m_chartView[3], 9, 6, 6, 6);
+    m_mainLayout->addWidget(m_chartView[2], 10, 0, 7, 6);
+    m_mainLayout->addWidget(m_chartView[3], 10, 6, 7, 6);
     setLayout(m_mainLayout);
 
 
     QPushButton *b405 = new QPushButton("405",this);
-    //b405->setGeometry(700,40,100,20);
     connect( b405, SIGNAL(clicked()),this,SLOT(f405Chosen()));
     m_mainLayout->addWidget(b405,0,12);
     QPushButton *b458 = new QPushButton("458",this);
-    //b458->setGeometry(700,60,100,20);
     connect( b458, SIGNAL(clicked()),this,SLOT(f458Chosen()));
     m_mainLayout->addWidget(b458,1,12);
     QPushButton *b476 = new QPushButton("476",this);
-    b476->setGeometry(700,80,100,20);
     connect( b476, SIGNAL(clicked()),this,SLOT(f476Chosen()));
     m_mainLayout->addWidget(b476,2,12);
     QPushButton *b488 = new QPushButton("488",this);
-    b488->setGeometry(700,100,100,20);
     connect( b488, SIGNAL(clicked()),this,SLOT(f488Chosen()));
     m_mainLayout->addWidget(b488,3,12);
     QPushButton *b496 = new QPushButton("496",this);
-    b496->setGeometry(700,140,100,20);
     connect( b496, SIGNAL(clicked()),this,SLOT(f496Chosen()));
     m_mainLayout->addWidget(b496,4,12);
     QPushButton *b514 = new QPushButton("514",this);
-    b514->setGeometry(700,160,100,20);
     connect( b514, SIGNAL(clicked()),this,SLOT(f514Chosen()));
     m_mainLayout->addWidget(b514,5,12);
     QPushButton *b543 = new QPushButton("543",this);
-    b543->setGeometry(700,180,100,20);
     connect( b543, SIGNAL(clicked()),this,SLOT(f543Chosen()));
     m_mainLayout->addWidget(b543,6,12);
     QPushButton *b633 = new QPushButton("633",this);
-    b633->setGeometry(700,200,100,20);
     connect( b633, SIGNAL(clicked()),this,SLOT(f633Chosen()));
     m_mainLayout->addWidget(b633,7,12);
-    QLabel *label = new QLabel("Номер столбца");
-    m_mainLayout->addWidget(label,8,12);
+    QLabel *label1 = new QLabel("Номер столбца");
+    m_mainLayout->addWidget(label1,8,12);
     sb = new QSpinBox(this);
     m_mainLayout->addWidget(sb,9,12);
+
+    QLabel *label2 = new QLabel("Границы");
+    m_mainLayout->addWidget(label2,10,12);
+    sbbeg = new QSpinBox(this);
+    sbbeg->setRange(-100,100);
+    sbbeg->setValue(-70);
+    m_mainLayout->addWidget(sbbeg,11,12);
+    sbmid = new QSpinBox(this);
+    sbmid->setRange(-100,100);
+    sbmid->setValue(-20);
+    m_mainLayout->addWidget(sbmid,12,12);
+    sbend = new QSpinBox(this);
+    sbend->setRange(-100,100);
+    sbend->setValue(30);
+    m_mainLayout->addWidget(sbend,13,12);
+
+
     QPushButton *plot = new QPushButton("Отобразить графики",this);
-    plot->setGeometry(700,220,100,20);
     connect( plot, SIGNAL(clicked()),this,SLOT(loaded()));
-    m_mainLayout->addWidget(plot,11,12);
+    m_mainLayout->addWidget(plot,15,12);
     QPushButton *write = new QPushButton("Загрузить в файл",this);
-    write->setGeometry(700,240,100,20);
     connect( write, SIGNAL(clicked()),this,SLOT(wroteResult()));
-    m_mainLayout->addWidget(write,12,12);
+    m_mainLayout->addWidget(write,16,12);
 }
 QVector<QVector<double>>   PlotWidget::process(const QString &file, int a,const QString &name){
     QVector<QVector<double>> v;
@@ -131,21 +138,21 @@ void  PlotWidget::loaded()
                 v405[0]=mv->minus(v405[0],l);
                 addSeries(v405,"405",3);
                 connectMarkers(3);
-                p405=pp->maxPoints(v405);
+                p405=pp->maxPoints(v405,sbbeg->value(),sbmid->value(), sbend->value());
                 e_405 = pp->errorS(v488[1],v405[1]);
                 st405 = pp->statistic(v405);
             }
             v458[0]=mv->minus(v458[0],l);
             addSeries(v458,"458",3);
             connectMarkers(3);
-            p458=pp->maxPoints(v458);
+            p458=pp->maxPoints(v458,sbbeg->value(),sbmid->value(), sbend->value());
             e_458 = pp->errorS(v488[1],v458[1]);
             st458 = pp->statistic(v458);
             if(f476!="") {
                 v476[0]=mv->minus(v476[0],l);
                 addSeries(v476,"476",3);
                 connectMarkers(3);
-                p476=pp->maxPoints(v476);
+                p476=pp->maxPoints(v476,sbbeg->value(),sbmid->value(), sbend->value());
                 e_476 = pp->errorS(v488[1],v476[1]);
                 st476 = pp->statistic(v476);
             }
@@ -153,14 +160,14 @@ void  PlotWidget::loaded()
                 v488[0]=mv->minus(v488[0],l);
                 addSeries(v488,"488",3);
                 connectMarkers(3);
-                p488=pp->maxPoints(v488);
+                p488=pp->maxPoints(v488,sbbeg->value(),sbmid->value(), sbend->value());
                 st488 = pp->statistic(v488);
             }
             if(f496!="") {
                 v496[0]=mv->minus(v496[0],l);
                 addSeries(v496,"496",3);
                 connectMarkers(3);
-                p496=pp->maxPoints(v496);
+                p496=pp->maxPoints(v496,sbbeg->value(),sbmid->value(), sbend->value());
                 e_496 = pp->errorS(v488[1],v496[1]);
                 st496 = pp->statistic(v496);
             }
@@ -168,7 +175,7 @@ void  PlotWidget::loaded()
                 v514[0]=mv->minus(v514[0],l);
                 addSeries(v514,"514",3);
                 connectMarkers(3);
-                p514=pp->maxPoints(v514);
+                p514=pp->maxPoints(v514,sbbeg->value(),sbmid->value(), sbend->value());
                 e_514 = pp->errorS(v488[1],v514[1]);
                 st514 = pp->statistic(v514);
             }
@@ -176,7 +183,7 @@ void  PlotWidget::loaded()
                 v543[0]=mv->minus(v543[0],l);
                 addSeries(v543,"543",3);
                 connectMarkers(3);
-                p543=pp->maxPoints(v543);
+                p543=pp->maxPoints(v543,sbbeg->value(),sbmid->value(), sbend->value());
                 e_543 = pp->errorS(v488[1],v543[1]);
                 st543 = pp->statistic(v543);
             }
@@ -184,7 +191,7 @@ void  PlotWidget::loaded()
                 v633[0]=mv->minus(v633[0],l);
                 addSeries(v633,"633",3);
                 connectMarkers(3);
-                p633=pp->maxPoints(v633);
+                p633=pp->maxPoints(v633,sbbeg->value(),sbmid->value(), sbend->value());
                 e_633 = pp->errorS(v488[1],v633[1]);
                 st633 = pp->statistic(v633);
             }

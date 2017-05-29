@@ -22,26 +22,26 @@ double ProcessPlot::lat(QVector<QVector<double> > &input){
     }
     return l;
 }
-QVector<QVector<double> > ProcessPlot::maxPoints(QVector<QVector<double> > &input){
+QVector<QVector<double> > ProcessPlot::maxPoints(QVector<QVector<double> > &input,int begin,int mid, int end){
     QVector<double> x ;
     x<<0<<0<<0<<0;
     QVector<double> y,otn;
     y<<0<<0<<0<<0;
     int n=input[0].length();
     for(int i=1; i<n-1;i++){
-        if(input[0][i]<-70){
+        if(input[0][i]<begin){
             if(input[1][i]>y[0]){
                 x[0]=input[0][i];
                 y[0]=input[1][i];
             }
         }
-        else if(input[0][i]<-20){
+        else if(input[0][i]<mid){
             if(input[1][i]>y[1]){
                 x[1]=input[0][i];
                 y[1]=input[1][i];
             }
         }
-        else if(input[0][i]<30){
+        else if(input[0][i]<end){
             if(input[1][i]>y[2]){
                 x[2]=input[0][i];
                 y[2]=input[1][i];
