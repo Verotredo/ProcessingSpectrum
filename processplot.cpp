@@ -63,7 +63,7 @@ QVector<QVector<double> > ProcessPlot::maxPoints(QVector<QVector<double> > &inpu
 QVector<QVector<double> > ProcessPlot::normalize(QVector<QVector<double> > &input){
     QVector<QVector<double> >v;
     QVector<double> m=mv->minus(input[1],mv->min(input[1]));
-    qDebug() <<mv->sum(m);
+    //qDebug() <<mv->sum(m);
     v<<input[0]<<mv->divide(m,mv->sum(m));
     return v;
 }
@@ -158,7 +158,7 @@ void ProcessPlot::setDataToVector(const QStringList &aStringList,
 {
     size_t x = aStringList.length(); // Count of line
     size_t y = aStringList.at(0).count(" ") + 1; // Count of digits in line
-    qDebug() << x<< y;
+    //qDebug() << x<< y;
     for (size_t i = 0; i < y; ++i) {
         QVector<double> temp_vector;
         for (size_t j = 0; j < x; ++j) {

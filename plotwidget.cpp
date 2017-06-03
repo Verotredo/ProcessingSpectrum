@@ -97,8 +97,7 @@ void  PlotWidget::loaded()
 {
     if(amount==9) amount--;
     if(amount>0){
-        removeSeries0_2();
-        removeSeries3();
+        removeSeries();
     }
     amount=0;
     double l=0;
@@ -130,7 +129,6 @@ void  PlotWidget::loaded()
         if(f633!="") {
             v633=process(f633,sb->value(),"633");
         }
-        qDebug() <<amount;
         if(f458!="") {
             l=pp->lat(v458);
             amount++;
@@ -209,15 +207,26 @@ void  PlotWidget::loaded()
 void PlotWidget::wroteResult()
 {
     QString name = QFileDialog::getOpenFileName(0,"Open ","","*.txt");
+    int ind=f488.lastIndexOf("/");
+    qDebug()<<f488<<ind<<f488.right(ind);
+    QFileInfo *fi=new QFileInfo(f488);
     QFile result(name);
+    QString input=fi->baseName(),number,n_date;
     QTextStream stream(&result);
-    QString f=f488;
-    f.remove("_488.txt");
-    f.append("_"+QString::number(sb->value()));
-    stream<<f;
+    input.remove("_488.txt");
+    n_date=input;
+    input.append("_"+QString::number(sb->value()));
+    stream<<input<<',';
+    ind=input.indexOf(" ");
+    if(ind >=0) number=input.left(ind);
+    else {
+        ind=input.indexOf("_");
+        number=input.left(ind);
+    }
+    stream<<number<<','<<n_date;
     if(result.open(QIODevice::WriteOnly|  QIODevice::Append)){
-        for(int i=0; i<res.length();i++)
-        stream<<','<<res[i];
+       // for(int i=0; i<res.length();i++)
+       // stream<<','<<res[i];
     }
     stream<<'\n';
    result.close();
@@ -278,28 +287,15 @@ void PlotWidget::addSeries(QVector<QVector<double>> &input, const QString &numbe
     }
 }
 
-void PlotWidget::removeSeries0_2()
+void PlotWidget::removeSeries()
 {
-    for(int k=0;k<3;k++)
-    {
+    for(int k=0;k<4;k++)
+    {   //qDebug() <<m_chart[k]->series();
         m_chart[k]->removeAllSeries();
+        qDebug()<<k;
     }
 }
 
-void PlotWidget::removeSeries3()
-{
-    for(int k=0;k<amount;k++)
-    {
-        if (m_series.count() > 0) {
-            if (m_series.count() > 0) {
-                QLineSeries *series = m_series.last();
-                m_chart[3]->removeSeries(series);
-                delete series;
-            }
-        }
-    }
-    m_series.clear();
-}
 
 void PlotWidget::connectMarkers(int i)
 {

@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <matvector.h>
 #include <QFile>
+#include <QFileInfo>
 using namespace QtCharts;
 class PlotWidget : public QWidget
 {
@@ -18,8 +19,7 @@ public:
     QVector<QVector<double>>   process(const QString &file, int a,const QString &name);
 public slots:
     void addSeries(QVector<QVector<double>> &input,const QString &number, int i);
-    void removeSeries0_2();
-    void removeSeries3();
+    void removeSeries();
     void connectMarkers( int i);
     void disconnectMarkers( int i);
 
