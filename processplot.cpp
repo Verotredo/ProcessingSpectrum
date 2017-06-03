@@ -185,18 +185,8 @@ QVector<QVector<double> > ProcessPlot::input(const QString &name, int a){
     QString s= allFileToString(file);
     s.replace(","," ");
     QStringList sl = s.split("\n");
-    for(int i=0;i<sl.length();i++){
-       if(sl[i]=="") sl.removeAt(i);
-    }
-    //qDebug() << sl;
-    for(int i=0;i<sl.length();i++){
-       if(sl[i]=="") sl.removeAt(i);
-    }
-    //qDebug() << sl;
-    for(int i=0;i<sl.length();i++){
-       if(sl[i]=="") sl.removeAt(i);
-    }
-    //qDebug() << sl;
+    sl.removeAll("");
+
     setDataToVector(sl, vector);
 
     //printVector(vector);

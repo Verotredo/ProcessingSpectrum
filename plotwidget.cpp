@@ -96,10 +96,9 @@ QVector<QVector<double>>   PlotWidget::process(const QString &file, int a,const 
 void  PlotWidget::loaded()
 {
     if(amount==9) amount--;
-    for(int j=0;j<3;j++){
-        for(int i=0; i<amount; i++){
-            removeSeries(j);
-        }
+    if(amount>0){
+        removeSeries0_2();
+        removeSeries3();
     }
     amount=0;
     double l=0;
@@ -131,6 +130,7 @@ void  PlotWidget::loaded()
         if(f633!="") {
             v633=process(f633,sb->value(),"633");
         }
+        qDebug() <<amount;
         if(f458!="") {
             l=pp->lat(v458);
             amount++;
@@ -278,14 +278,27 @@ void PlotWidget::addSeries(QVector<QVector<double>> &input, const QString &numbe
     }
 }
 
-void PlotWidget::removeSeries(int i)
+void PlotWidget::removeSeries0_2()
 {
-    if (m_series.count() > 0) {
-        QLineSeries *series = m_series.last();
-        m_chart[i]->removeSeries(series);
-        m_series.removeLast();
-        delete series;
+    for(int k=0;k<3;k++)
+    {
+        m_chart[k]->removeAllSeries();
     }
+}
+
+void PlotWidget::removeSeries3()
+{
+    for(int k=0;k<amount;k++)
+    {
+        if (m_series.count() > 0) {
+            if (m_series.count() > 0) {
+                QLineSeries *series = m_series.last();
+                m_chart[3]->removeSeries(series);
+                delete series;
+            }
+        }
+    }
+    m_series.clear();
 }
 
 void PlotWidget::connectMarkers(int i)

@@ -18,7 +18,8 @@ public:
     QVector<QVector<double>>   process(const QString &file, int a,const QString &name);
 public slots:
     void addSeries(QVector<QVector<double>> &input,const QString &number, int i);
-    void removeSeries(int i);
+    void removeSeries0_2();
+    void removeSeries3();
     void connectMarkers( int i);
     void disconnectMarkers( int i);
 
@@ -37,7 +38,7 @@ public slots:
 private:
 
     QVector<QChart *>m_chart;
-    int amount;
+    int amount=0;
     QList<QLineSeries *> m_series;
     ProcessPlot *pp;
     MatVector *mv = new MatVector();
