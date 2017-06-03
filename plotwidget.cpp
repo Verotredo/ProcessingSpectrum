@@ -10,6 +10,7 @@ PlotWidget::PlotWidget(QWidget *parent) :
         m_chartView<< new QChartView(m_chart[i], this);
         m_chart[i]->legend()->setVisible(true);
         m_chart[i]->legend()->setAlignment(Qt::AlignBottom);
+        m_chartView[i]->setRubberBand(QChartView::RectangleRubberBand);
         m_chartView[i]->setRenderHint(QPainter::Antialiasing);
     }
     m_chart[0]->setTitle("Исходные графики");
@@ -23,28 +24,28 @@ PlotWidget::PlotWidget(QWidget *parent) :
     setLayout(m_mainLayout);
 
 
-    QPushButton *b405 = new QPushButton("405",this);
+    b405 = new QPushButton("405",this);
     connect( b405, SIGNAL(clicked()),this,SLOT(f405Chosen()));
     m_mainLayout->addWidget(b405,0,12);
-    QPushButton *b458 = new QPushButton("458",this);
+    b458 = new QPushButton("458",this);
     connect( b458, SIGNAL(clicked()),this,SLOT(f458Chosen()));
     m_mainLayout->addWidget(b458,1,12);
-    QPushButton *b476 = new QPushButton("476",this);
+    b476 = new QPushButton("476",this);
     connect( b476, SIGNAL(clicked()),this,SLOT(f476Chosen()));
     m_mainLayout->addWidget(b476,2,12);
-    QPushButton *b488 = new QPushButton("488",this);
+    b488 = new QPushButton("488",this);
     connect( b488, SIGNAL(clicked()),this,SLOT(f488Chosen()));
     m_mainLayout->addWidget(b488,3,12);
-    QPushButton *b496 = new QPushButton("496",this);
+    b496 = new QPushButton("496",this);
     connect( b496, SIGNAL(clicked()),this,SLOT(f496Chosen()));
     m_mainLayout->addWidget(b496,4,12);
-    QPushButton *b514 = new QPushButton("514",this);
+    b514 = new QPushButton("514",this);
     connect( b514, SIGNAL(clicked()),this,SLOT(f514Chosen()));
     m_mainLayout->addWidget(b514,5,12);
-    QPushButton *b543 = new QPushButton("543",this);
+    b543 = new QPushButton("543",this);
     connect( b543, SIGNAL(clicked()),this,SLOT(f543Chosen()));
     m_mainLayout->addWidget(b543,6,12);
-    QPushButton *b633 = new QPushButton("633",this);
+    b633 = new QPushButton("633",this);
     connect( b633, SIGNAL(clicked()),this,SLOT(f633Chosen()));
     m_mainLayout->addWidget(b633,7,12);
     QLabel *label1 = new QLabel("Номер столбца");
@@ -235,34 +236,42 @@ void PlotWidget::wroteResult()
 void PlotWidget::f405Chosen()
 {
     f405 = QFileDialog::getOpenFileName(0,"Open 405","","*.txt");
+    b405->setText("405: +");
 }
 void PlotWidget::f458Chosen()
 {
     f458 = QFileDialog::getOpenFileName(0,"Open 458","","*.txt");
+    b458->setText("458: +");
 }
 void PlotWidget::f476Chosen()
 {
     f476 = QFileDialog::getOpenFileName(0,"Open 476","","*.txt");
+    b476->setText("476: +");
 }
 void PlotWidget::f488Chosen()
 {
     f488 = QFileDialog::getOpenFileName(0,"Open 488","","*.txt");
+    b488->setText("488: +");
 }
 void PlotWidget::f496Chosen()
 {
     f496 = QFileDialog::getOpenFileName(0,"Open 496","","*.txt");
+    b496->setText("496: +");
 }
 void PlotWidget::f514Chosen()
 {
     f514 = QFileDialog::getOpenFileName(0,"Open 514","","*.txt");
+    b514->setText("514: +");
 }
 void PlotWidget::f543Chosen()
 {
     f543 = QFileDialog::getOpenFileName(0,"Open 543","","*.txt");
+    b543->setText("543: +");
 }
 void PlotWidget::f633Chosen()
 {
     f633 = QFileDialog::getOpenFileName(0,"Open 633","","*.txt");
+    b633->setText("633: +");
 }
 
 void PlotWidget::addSeries(QVector<QVector<double>> &input, const QString &number, int i)
