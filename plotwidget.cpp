@@ -208,12 +208,14 @@ void  PlotWidget::loaded()
 void PlotWidget::wroteResult()
 {
     QString name = QFileDialog::getOpenFileName(0,"Open ","","*.txt");
+
     int ind=f488.lastIndexOf("/");
     qDebug()<<f488<<ind<<f488.right(ind);
     QFileInfo *fi=new QFileInfo(f488);
     QFile result(name);
     QString input=fi->baseName(),number,n_date;
     QTextStream stream(&result);
+    if(result.size()==0) stream<<"Файл,Вид,Вид+Дата, otn_405_1,otn_405_2,otn_405_3, otn_458_1,otn_458_2,otn_458_3, otn_476_1,otn_476_2,otn_476_3, otn_488_1,otn_488_2,otn_488_3,otn_496_1,otn_496_2,otn_496_3, otn_514_1,otn_514_2,otn_514_3, otn_543_1,otn_543_2,otn_543_3, otn_633_1,otn_633_2,otn_633_3, e_405, e_458, e_476, e_496, e_514, e_543, e_633, m_405, m_458, m_476,m_488, m_496, m_514, m_543, m_633, a_405, a_458, a_476,a_488, a_496, a_514, a_543, a_633, E_405, E_458, E_476,E_488, E_496, E_514, E_543, E_633"<<'\n';
     input.remove("_488.txt");
     n_date=input;
     input.append("_"+QString::number(sb->value()));
@@ -236,42 +238,42 @@ void PlotWidget::wroteResult()
 void PlotWidget::f405Chosen()
 {
     f405 = QFileDialog::getOpenFileName(0,"Open 405","","*.txt");
-    b405->setText("405: +");
+    if(f405!="")b405->setText("405: +");
 }
 void PlotWidget::f458Chosen()
 {
     f458 = QFileDialog::getOpenFileName(0,"Open 458","","*.txt");
-    b458->setText("458: +");
+    if(f458!="")b458->setText("458: +");
 }
 void PlotWidget::f476Chosen()
 {
     f476 = QFileDialog::getOpenFileName(0,"Open 476","","*.txt");
-    b476->setText("476: +");
+    if(f476!="")b476->setText("476: +");
 }
 void PlotWidget::f488Chosen()
 {
     f488 = QFileDialog::getOpenFileName(0,"Open 488","","*.txt");
-    b488->setText("488: +");
+    if(f488!="")b488->setText("488: +");
 }
 void PlotWidget::f496Chosen()
 {
     f496 = QFileDialog::getOpenFileName(0,"Open 496","","*.txt");
-    b496->setText("496: +");
+    if(f496!="")b496->setText("496: +");
 }
 void PlotWidget::f514Chosen()
 {
     f514 = QFileDialog::getOpenFileName(0,"Open 514","","*.txt");
-    b514->setText("514: +");
+    if(f514!="")b514->setText("514: +");
 }
 void PlotWidget::f543Chosen()
 {
     f543 = QFileDialog::getOpenFileName(0,"Open 543","","*.txt");
-    b543->setText("543: +");
+    if(f543!="")b543->setText("543: +");
 }
 void PlotWidget::f633Chosen()
 {
     f633 = QFileDialog::getOpenFileName(0,"Open 633","","*.txt");
-    b633->setText("633: +");
+    if(f633!="")b633->setText("633: +");
 }
 
 void PlotWidget::addSeries(QVector<QVector<double>> &input, const QString &number, int i)
@@ -290,10 +292,8 @@ void PlotWidget::addSeries(QVector<QVector<double>> &input, const QString &numbe
 
     series->append(data);
     m_chart[i]->addSeries(series);
+    m_chart[i]->createDefaultAxes();
 
-    if (amount == 1 || amount==9) {
-        m_chart[i]->createDefaultAxes();
-    }
 }
 
 void PlotWidget::removeSeries()
