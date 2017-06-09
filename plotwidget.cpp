@@ -203,7 +203,7 @@ void PlotWidget::wroteResult()
         if(result.size()==0) stream<<"File,Species,Species+Date, otn_405_1,otn_405_2,otn_405_4, otn_458_1,otn_458_2,otn_458_4, otn_476_1,otn_476_2,otn_476_4, otn_488_1,otn_488_2,otn_488_4,otn_496_1,otn_496_2,otn_496_4, otn_514_1,otn_514_2,otn_514_4, otn_543_1,otn_543_2,otn_543_4, otn_633_1,otn_633_2,otn_633_4, e_405, e_458, e_476, e_496, e_514, e_543, e_633, m_405, m_458, m_476,m_488, m_496, m_514, m_543, m_633, a_405, a_458, a_476,a_488, a_496, a_514, a_543, a_633, E_405, E_458, E_476,E_488, E_496, E_514, E_543, E_633 "<<"\r\n";
         cell=f488.mid(ind-2,2);
         input.remove("_488.txt");
-        input.append("_"+QString::number(sb->value()));
+        //input.append("_"+QString::number(sb->value()));
         ind=input.indexOf(" ");
         if(ind >=0) number=input.left(ind);
         else {
@@ -212,7 +212,7 @@ void PlotWidget::wroteResult()
         }
         ind=f488.indexOf(".");
         n_date=f488.mid(ind-3,9);
-        stream<<number+n_date+cell<<','<<number<<", "<<number+n_date;
+        stream<<"\r\n"<<number+n_date+cell+"_"+QString::number(sb->value())<<','<<number<<", "<<number+n_date;
         if(result.open(QIODevice::WriteOnly|  QIODevice::Append)){
             for(int i=0; i<res.length();i++)
                 stream<<','<<res[i];
