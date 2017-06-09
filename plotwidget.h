@@ -38,7 +38,7 @@ public slots:
 private:
 
     QVector<QChart *>m_chart;
-    int amount=0;
+    int amount=0,b,m,e;
     QList<QLineSeries *> m_series;
     ProcessPlot *pp;
     MatVector *mv = new MatVector();
@@ -46,7 +46,8 @@ private:
     QVector<QChartView *>m_chartView;
     QGridLayout *m_mainLayout;
     QGridLayout *m_fontLayout;
-    QSpinBox *sb, *sbbeg,*sbmid,*sbend;
+    QSpinBox *sb;
+
     QString f405="",f458="",f476="",f488="",f496="",f514="",f543="",f633="";
     QPushButton *b405, *b458, *b476, *b488, *b496, *b514, *b543, *b633;
 };

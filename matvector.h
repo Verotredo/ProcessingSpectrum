@@ -3,7 +3,6 @@
 #include <QVector>
 #include <QtMath>
 #include <float.h>
-#include <QDebug>
 class MatVector
 {
 

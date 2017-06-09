@@ -23,51 +23,38 @@ PlotWidget::PlotWidget(QWidget *parent) :
     m_mainLayout->addWidget(m_chartView[3], 10, 6, 7, 6);
     setLayout(m_mainLayout);
 
+    b=-70; m=-20; e=30;
+    QLabel *label1 = new QLabel("Загрузка данных: ");
+    m_mainLayout->addWidget(label1,0,12);
 
     b405 = new QPushButton("405",this);
     connect( b405, SIGNAL(clicked()),this,SLOT(f405Chosen()));
-    m_mainLayout->addWidget(b405,0,12);
+    m_mainLayout->addWidget(b405,1,12);
     b458 = new QPushButton("458",this);
     connect( b458, SIGNAL(clicked()),this,SLOT(f458Chosen()));
-    m_mainLayout->addWidget(b458,1,12);
+    m_mainLayout->addWidget(b458,2,12);
     b476 = new QPushButton("476",this);
     connect( b476, SIGNAL(clicked()),this,SLOT(f476Chosen()));
-    m_mainLayout->addWidget(b476,2,12);
+    m_mainLayout->addWidget(b476,3,12);
     b488 = new QPushButton("488",this);
     connect( b488, SIGNAL(clicked()),this,SLOT(f488Chosen()));
-    m_mainLayout->addWidget(b488,3,12);
+    m_mainLayout->addWidget(b488,4,12);
     b496 = new QPushButton("496",this);
     connect( b496, SIGNAL(clicked()),this,SLOT(f496Chosen()));
-    m_mainLayout->addWidget(b496,4,12);
+    m_mainLayout->addWidget(b496,5,12);
     b514 = new QPushButton("514",this);
     connect( b514, SIGNAL(clicked()),this,SLOT(f514Chosen()));
-    m_mainLayout->addWidget(b514,5,12);
+    m_mainLayout->addWidget(b514,6,12);
     b543 = new QPushButton("543",this);
     connect( b543, SIGNAL(clicked()),this,SLOT(f543Chosen()));
-    m_mainLayout->addWidget(b543,6,12);
+    m_mainLayout->addWidget(b543,7,12);
     b633 = new QPushButton("633",this);
     connect( b633, SIGNAL(clicked()),this,SLOT(f633Chosen()));
-    m_mainLayout->addWidget(b633,7,12);
-    QLabel *label1 = new QLabel("Номер столбца");
-    m_mainLayout->addWidget(label1,8,12);
+    m_mainLayout->addWidget(b633,8,12);
+    QLabel *label2 = new QLabel("Номер столбца - бактерии (>0)");
+    m_mainLayout->addWidget(label2,9,12);
     sb = new QSpinBox(this);
-    m_mainLayout->addWidget(sb,9,12);
-
-    QLabel *label2 = new QLabel("Границы");
-    m_mainLayout->addWidget(label2,10,12);
-    sbbeg = new QSpinBox(this);
-    sbbeg->setRange(-100,100);
-    sbbeg->setValue(-70);
-    m_mainLayout->addWidget(sbbeg,11,12);
-    sbmid = new QSpinBox(this);
-    sbmid->setRange(-100,100);
-    sbmid->setValue(-20);
-    m_mainLayout->addWidget(sbmid,12,12);
-    sbend = new QSpinBox(this);
-    sbend->setRange(-100,100);
-    sbend->setValue(30);
-    m_mainLayout->addWidget(sbend,13,12);
-
+    m_mainLayout->addWidget(sb,10,12);
 
     QPushButton *plot = new QPushButton("Отобразить графики",this);
     connect( plot, SIGNAL(clicked()),this,SLOT(loaded()));
@@ -79,7 +66,7 @@ PlotWidget::PlotWidget(QWidget *parent) :
 QVector<QVector<double>>   PlotWidget::process(const QString &file, int a,const QString &name){
     QVector<QVector<double>> v;
     v=pp->input(file,a);
-    if(v.length()>2) {
+    if(v.length()>2 &&  amount==0) {
         (new QErrorMessage(this))->showMessage("Неверный номер");
         return v;
     }
@@ -96,7 +83,6 @@ QVector<QVector<double>>   PlotWidget::process(const QString &file, int a,const 
 }
 void  PlotWidget::loaded()
 {
-    if(amount==9) amount--;
     if(amount>0){
         removeSeries();
     }
@@ -130,43 +116,41 @@ void  PlotWidget::loaded()
         if(f633!="") {
             v633=process(f633,sb->value(),"633");
         }
-        if(f458!="") {
+        if(f458!="" && f488!="") {
             l=pp->lat(v458);
-            amount++;
             if(f405!=""){
                 v405[0]=mv->minus(v405[0],l);
                 addSeries(v405,"405",3);
                 connectMarkers(3);
-                p405=pp->maxPoints(v405,sbbeg->value(),sbmid->value(), sbend->value());
+                p405=pp->maxPoints(v405,b,m, e);
                 e_405 = pp->errorS(v488[1],v405[1]);
                 st405 = pp->statistic(v405);
+
             }
             v458[0]=mv->minus(v458[0],l);
             addSeries(v458,"458",3);
             connectMarkers(3);
-            p458=pp->maxPoints(v458,sbbeg->value(),sbmid->value(), sbend->value());
+            p458=pp->maxPoints(v458,b,m, e);
             e_458 = pp->errorS(v488[1],v458[1]);
             st458 = pp->statistic(v458);
             if(f476!="") {
                 v476[0]=mv->minus(v476[0],l);
                 addSeries(v476,"476",3);
                 connectMarkers(3);
-                p476=pp->maxPoints(v476,sbbeg->value(),sbmid->value(), sbend->value());
+                p476=pp->maxPoints(v476,b,m, e);
                 e_476 = pp->errorS(v488[1],v476[1]);
                 st476 = pp->statistic(v476);
             }
-            if(f488!="") {
-                v488[0]=mv->minus(v488[0],l);
-                addSeries(v488,"488",3);
-                connectMarkers(3);
-                p488=pp->maxPoints(v488,sbbeg->value(),sbmid->value(), sbend->value());
-                st488 = pp->statistic(v488);
-            }
+            v488[0]=mv->minus(v488[0],l);
+            addSeries(v488,"488",3);
+            connectMarkers(3);
+            p488=pp->maxPoints(v488,b,m, e);
+            st488 = pp->statistic(v488);
             if(f496!="") {
                 v496[0]=mv->minus(v496[0],l);
                 addSeries(v496,"496",3);
                 connectMarkers(3);
-                p496=pp->maxPoints(v496,sbbeg->value(),sbmid->value(), sbend->value());
+                p496=pp->maxPoints(v496,b,m, e);
                 e_496 = pp->errorS(v488[1],v496[1]);
                 st496 = pp->statistic(v496);
             }
@@ -174,7 +158,7 @@ void  PlotWidget::loaded()
                 v514[0]=mv->minus(v514[0],l);
                 addSeries(v514,"514",3);
                 connectMarkers(3);
-                p514=pp->maxPoints(v514,sbbeg->value(),sbmid->value(), sbend->value());
+                p514=pp->maxPoints(v514,b,m, e);
                 e_514 = pp->errorS(v488[1],v514[1]);
                 st514 = pp->statistic(v514);
             }
@@ -182,7 +166,7 @@ void  PlotWidget::loaded()
                 v543[0]=mv->minus(v543[0],l);
                 addSeries(v543,"543",3);
                 connectMarkers(3);
-                p543=pp->maxPoints(v543,sbbeg->value(),sbmid->value(), sbend->value());
+                p543=pp->maxPoints(v543,b,m, e);
                 e_543 = pp->errorS(v488[1],v543[1]);
                 st543 = pp->statistic(v543);
             }
@@ -190,15 +174,17 @@ void  PlotWidget::loaded()
                 v633[0]=mv->minus(v633[0],l);
                 addSeries(v633,"633",3);
                 connectMarkers(3);
-                p633=pp->maxPoints(v633,sbbeg->value(),sbmid->value(), sbend->value());
+                p633=pp->maxPoints(v633,b,m, e);
                 e_633 = pp->errorS(v488[1],v633[1]);
                 st633 = pp->statistic(v633);
             }
-            res=p405[2]+p458[2]+p476[2]+p488[2]+p496[2]+p514[2]+p543[2]+p633[2];
-            res<<e_405<<e_458<<e_476<<e_496<<e_514<<e_543<<e_633;
-            res<<st405[0]<<st458[0]<<st476[0]<<st488[0]<<st496[0]<<st514[0]<<st543[0]<<st633[0];
-            res<<st405[1]<<st458[1]<<st476[1]<<st488[1]<<st496[1]<<st514[1]<<st543[1]<<st633[1];
-            res<<st405[2]<<st458[2]<<st476[2]<<st488[2]<<st496[2]<<st514[2]<<st543[2]<<st633[2];
+            if(f405!="" && f476!="" && f496!="" && f514!="" && f543!="" && f633!=""){
+                res=p405[2]+p458[2]+p476[2]+p488[2]+p496[2]+p514[2]+p543[2]+p633[2];
+                res<<e_405<<e_458<<e_476<<e_496<<e_514<<e_543<<e_633;
+                res<<st405[0]<<st458[0]<<st476[0]<<st488[0]<<st496[0]<<st514[0]<<st543[0]<<st633[0];
+                res<<st405[1]<<st458[1]<<st476[1]<<st488[1]<<st496[1]<<st514[1]<<st543[1]<<st633[1];
+                res<<st405[2]<<st458[2]<<st476[2]<<st488[2]<<st496[2]<<st514[2]<<st543[2]<<st633[2];
+            }
         }
 
 
@@ -206,33 +192,34 @@ void  PlotWidget::loaded()
 }
 
 void PlotWidget::wroteResult()
-{
-    QString name = QFileDialog::getOpenFileName(0,"Open ","","*.txt");
+{   if(res.length()>50){
+        QString name = QFileDialog::getOpenFileName(0,"Save in ","","*.txt");
 
-    int ind=f488.lastIndexOf("/");
-    qDebug()<<f488<<ind<<f488.right(ind);
-    QFileInfo *fi=new QFileInfo(f488);
-    QFile result(name);
-    QString input=fi->baseName(),number,n_date;
-    QTextStream stream(&result);
-    if(result.size()==0) stream<<"Файл,Вид,Вид+Дата, otn_405_1,otn_405_2,otn_405_3, otn_458_1,otn_458_2,otn_458_3, otn_476_1,otn_476_2,otn_476_3, otn_488_1,otn_488_2,otn_488_3,otn_496_1,otn_496_2,otn_496_3, otn_514_1,otn_514_2,otn_514_3, otn_543_1,otn_543_2,otn_543_3, otn_633_1,otn_633_2,otn_633_3, e_405, e_458, e_476, e_496, e_514, e_543, e_633, m_405, m_458, m_476,m_488, m_496, m_514, m_543, m_633, a_405, a_458, a_476,a_488, a_496, a_514, a_543, a_633, E_405, E_458, E_476,E_488, E_496, E_514, E_543, E_633"<<'\n';
-    input.remove("_488.txt");
-    n_date=input;
-    input.append("_"+QString::number(sb->value()));
-    stream<<input<<',';
-    ind=input.indexOf(" ");
-    if(ind >=0) number=input.left(ind);
-    else {
-        ind=input.indexOf("_");
-        number=input.left(ind);
+        int ind=f488.lastIndexOf("_488");
+        QFileInfo *fi=new QFileInfo(f488);
+        QFile result(name);
+        QString input=fi->baseName(),number,n_date,cell;
+        QTextStream stream(&result);
+        if(result.size()==0) stream<<"File,Species,Species+Date, otn_405_1,otn_405_2,otn_405_4, otn_458_1,otn_458_2,otn_458_4, otn_476_1,otn_476_2,otn_476_4, otn_488_1,otn_488_2,otn_488_4,otn_496_1,otn_496_2,otn_496_4, otn_514_1,otn_514_2,otn_514_4, otn_543_1,otn_543_2,otn_543_4, otn_633_1,otn_633_2,otn_633_4, e_405, e_458, e_476, e_496, e_514, e_543, e_633, m_405, m_458, m_476,m_488, m_496, m_514, m_543, m_633, a_405, a_458, a_476,a_488, a_496, a_514, a_543, a_633, E_405, E_458, E_476,E_488, E_496, E_514, E_543, E_633 "<<"\r\n";
+        cell=f488.mid(ind-2,2);
+        input.remove("_488.txt");
+        input.append("_"+QString::number(sb->value()));
+        ind=input.indexOf(" ");
+        if(ind >=0) number=input.left(ind);
+        else {
+            ind=input.indexOf("_");
+            number=input.left(ind);
+        }
+        ind=f488.indexOf(".");
+        n_date=f488.mid(ind-3,9);
+        stream<<number+n_date+cell<<','<<number<<", "<<number+n_date;
+        if(result.open(QIODevice::WriteOnly|  QIODevice::Append)){
+            for(int i=0; i<res.length();i++)
+                stream<<','<<res[i];
+        }
+        stream<<"\r\n";
+        result.close();
     }
-    stream<<number<<','<<n_date;
-    if(result.open(QIODevice::WriteOnly|  QIODevice::Append)){
-       // for(int i=0; i<res.length();i++)
-       // stream<<','<<res[i];
-    }
-    stream<<'\n';
-   result.close();
 }
 
 void PlotWidget::f405Chosen()
@@ -280,7 +267,6 @@ void PlotWidget::addSeries(QVector<QVector<double>> &input, const QString &numbe
 {
     QLineSeries *series = new QLineSeries();
     m_series.append(series);
-
     series->setName( number);
 
     QList<QPointF> data;
@@ -288,7 +274,6 @@ void PlotWidget::addSeries(QVector<QVector<double>> &input, const QString &numbe
     for (int i = 0; i < input[0].length(); i++) {
         data.append(QPointF(input[0][i], input[1][i]));
     }
-
 
     series->append(data);
     m_chart[i]->addSeries(series);

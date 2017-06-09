@@ -92,35 +92,7 @@ QVector<QVector<double> >   ProcessPlot::interplt(QVector<QVector<double> > &inp
     QVector<double> y;
 
 
-    //double a[n], b[n], c[n], d[n], l[n], r[n], s[n],h=input[0][1]-input[0][0],delta[n],lambda[n];
-
     int nx=x.length();
-//    int k;
-//    for(k=1; k<n; k++){
-//           l[k] = (input[1][k] - input[1][k-1])/h;
-//       }
-//       delta[1] = - h/(4*h);
-//       lambda[1] = 1.5*(l[2] - l[1])/(2*h);
-//       for(k=3; k<n; k++){
-//          delta[k-1] = - h/(4*h + h*delta[k-2]);
-//          lambda[k-1] = (3*l[k] - 3*l[k-1] - h*lambda[k-2]) / (4*h + h*delta[k-2]);
-//       }
-//       c[0] = 0;
-//       c[n-1] = 0;
-//       for(k=n-1; k>1; k--){
-//          c[k-1] = delta[k-1]*c[k] + lambda[k-1];
-//       }
-//       for(k=1; k<n; k++){
-//          d[k] = (c[k] - c[k-1])/(3*h);
-//          b[k] = l[k] + (2*c[k]*h + h*c[k-1])/3;
-//       }
-//       for(k=2; k<n; k++){
-//           c[k]=6*(l[k]-l[k-1])-h*c[k-2]-4*h*c[k-1];
-//       }
-//       for(k=1; k<n; k++){
-//          d[k] = (c[k] - c[k-1])/h;
-//          b[k] = (2*c[k] + c[k-1])*h/6+l[k];
-//       }
         spline1dinterpolant sp;
         real_1d_array xold,yold,xnew,ynew;
         double *dxold =&input[0][0], *dyold=&input[1][0], *dxnew =&x[0],*dynew;
@@ -130,12 +102,6 @@ QVector<QVector<double> >   ProcessPlot::interplt(QVector<QVector<double> > &inp
         for(int i=0;i<x.length();i++){
             y<<dynew[i];
         }
-//    for(int i=1;i<n;i++){
-//        for(int j=0;j<nx;j++){
-//            if(x[j]>=input[0][i-1] && input[0][i]>=x[j])
-//               y[j]=input[1][i-1]+b[i]*(x[j]-input[0][i-1])+c[i]*pow((x[j]-input[0][i-1])/2, 2)+d[i]*pow((x[j]-input[0][i-1]), 3)/6;
-//        }
-//    }
     QVector<QVector<double> > res;
     res<<x<<y;
     return res;
