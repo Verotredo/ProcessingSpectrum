@@ -13,7 +13,7 @@ class ProcessPlot
 public:
     ProcessPlot();
     double errorS(QVector<double> &i1,QVector<double> &i2);
-    QVector<QVector<double> > interplt(QVector<QVector<double> > &input);
+    QVector<QVector<double> > interplt(QVector<QVector<double> > &input,int diff);
     double  lat(QVector<QVector<double> > &input);
     QVector<QVector<double> > maxPoints(QVector<QVector<double> > &input,int begin,int mid, int end);
     QVector<QVector<double> > normalize(QVector<QVector<double> > &input);

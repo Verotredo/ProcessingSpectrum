@@ -53,8 +53,16 @@ PlotWidget::PlotWidget(QWidget *parent) :
     m_mainLayout->addWidget(b633,8,12);
     QLabel *label2 = new QLabel("Номер столбца - бактерии (>0)");
     m_mainLayout->addWidget(label2,9,12);
-    sb = new QSpinBox(this);
-    m_mainLayout->addWidget(sb,10,12);
+    sb1 = new QSpinBox(this);
+    m_mainLayout->addWidget(sb1,10,12);
+
+    QLabel *label3 = new QLabel("Размер деления при интерп.");
+    m_mainLayout->addWidget(label3,11,12);
+    sb2 = new QSpinBox(this);
+    sb2->setMinimum(1);
+    sb2->setMaximum(5);
+    sb2->setValue(1);
+    m_mainLayout->addWidget(sb2,12,12);
 
     QPushButton *plot = new QPushButton("Отобразить графики",this);
     connect( plot, SIGNAL(clicked()),this,SLOT(loaded()));
@@ -73,7 +81,7 @@ QVector<QVector<double>>   PlotWidget::process(const QString &file, int a,const 
     amount++;
     addSeries(v,name,0);
     connectMarkers(0);
-    v=pp->interplt(v);
+    v=pp->interplt(v,sb2->value());
     addSeries(v,name,1);
     connectMarkers(1);
     v=pp->normalize(v);
@@ -91,35 +99,36 @@ void  PlotWidget::loaded()
     QVector<QVector<double>> p405,p458,p476,p488,p496,p514,p543,p633;
     double e_405,e_458,e_476,e_496,e_514,e_543,e_633;
     QVector<double> st405,st458,st476,st488,st496,st514,st543,st633;
-    if(sb->value()>0){
+    if(sb1->value()>0){
         if(f405!="") {
-            v405=process(f405,sb->value(),"405");
+            v405=process(f405,sb1->value(),"405");
         }
         if(f458!="") {
-            v458=process(f458,sb->value(),"458");
+            v458=process(f458,sb1->value(),"458");
         }
         if(f476!="") {
-            v476=process(f476,sb->value(),"476");
+            v476=process(f476,sb1->value(),"476");
         }
         if(f488!="") {
-            v488=process(f488,sb->value(),"488");
+            v488=process(f488,sb1->value(),"488");
         }
         if(f496!="") {
-            v496=process(f496,sb->value(),"496");
+            v496=process(f496,sb1->value(),"496");
         }
         if(f514!="") {
-            v514=process(f514,sb->value(),"514");
+            v514=process(f514,sb1->value(),"514");
         }
         if(f543!="") {
-            v543=process(f543,sb->value(),"543");
+            v543=process(f543,sb1->value(),"543");
         }
         if(f633!="") {
-            v633=process(f633,sb->value(),"633");
+            v633=process(f633,sb1->value(),"633");
         }
         if(f458!="" && f488!="") {
             l=pp->lat(v458);
             if(f405!=""){
                 v405[0]=mv->minus(v405[0],l);
+                //qDebug()<<v405[0];
                 addSeries(v405,"405",3);
                 connectMarkers(3);
                 p405=pp->maxPoints(v405,b,m, e);
@@ -212,7 +221,7 @@ void PlotWidget::wroteResult()
         }
         ind=f488.indexOf(".");
         n_date=f488.mid(ind-3,9);
-        stream<<"\r\n"<<number+n_date+cell+"_"+QString::number(sb->value())<<','<<number<<", "<<number+n_date;
+        stream<<"\r\n"<<number+n_date+cell+"_"+QString::number(sb1->value())<<','<<number<<", "<<number+n_date;
         if(result.open(QIODevice::WriteOnly|  QIODevice::Append)){
             for(int i=0; i<res.length();i++)
                 stream<<','<<res[i];
@@ -286,7 +295,6 @@ void PlotWidget::removeSeries()
     for(int k=0;k<4;k++)
     {   //qDebug() <<m_chart[k]->series();
         m_chart[k]->removeAllSeries();
-        qDebug()<<k;
     }
 }
 

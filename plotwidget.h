@@ -46,7 +46,7 @@ private:
     QVector<QChartView *>m_chartView;
     QGridLayout *m_mainLayout;
     QGridLayout *m_fontLayout;
-    QSpinBox *sb;
+    QSpinBox *sb1, *sb2;
 
     QString f405="",f458="",f476="",f488="",f496="",f514="",f543="",f633="";
     QPushButton *b405, *b458, *b476, *b488, *b496, *b514, *b543, *b633;

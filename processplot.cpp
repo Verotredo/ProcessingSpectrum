@@ -81,12 +81,16 @@ QVector<double>   ProcessPlot::statistic(QVector<QVector<double> > &input){
     return res;
 }
 
-QVector<QVector<double> >   ProcessPlot::interplt(QVector<QVector<double> > &input){
+QVector<QVector<double> >   ProcessPlot::interplt(QVector<QVector<double> > &input, int diff){
     double min = mv->min(input[0]);
     double max = mv->max(input[0]);
     QVector<double> x;
-    for(int i=min;i<=max;i++){
+    for(int i=min;i<max;i=i+diff){
         x<<i;
+        if(i+diff>=max) {
+            x<<max;
+            break;
+        }
     }
     int n=input[0].length();
     QVector<double> y;
@@ -150,6 +154,11 @@ QVector<QVector<double> > ProcessPlot::input(const QString &name, int a){
     QFile file(name);
     QString s= allFileToString(file);
     s.replace(","," ");
+    s.replace("Channel 1","");
+    s.replace("Axis [nm],ROI1 [],ROI2 [],ROI3 [],ROI4 []","");
+    s.replace("Axis [nm],ROI1 [],ROI2 [],ROI3 []","");
+    s.replace("Axis [nm],ROI1 [],ROI2 []","");
+    s.replace("Axis [nm],ROI1 []","");
     QStringList sl = s.split("\n");
     sl.removeAll("");
 
